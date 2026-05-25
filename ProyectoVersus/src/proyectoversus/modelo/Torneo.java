@@ -22,6 +22,12 @@ public class Torneo {
         this.id_juego = id_juego;
     }
 
+    public Torneo(String nombre, String estado, int id_juego) {
+        this.nombre = nombre;
+        this.estado = estado;
+        this.id_juego = id_juego;
+    }
+
     // ==========================================
     // GETTERS Y SETTERS
     // ==========================================

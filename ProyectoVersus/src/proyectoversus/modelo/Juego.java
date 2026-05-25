@@ -20,6 +20,13 @@ public class Juego {
         this.requiere_equipo = requiere_equipo;
     }
 
+    public Juego(String nombre, boolean requiere_equipo) {
+        this.nombre = nombre;
+        this.requiere_equipo = requiere_equipo;
+    }
+    
+    
+
     // ==========================================
     // GETTERS Y SETTERS
     // ==========================================

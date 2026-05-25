@@ -15,6 +15,13 @@ public class Inscripcion {
     public Inscripcion() {
     }
 
+    public Inscripcion(int id_jugador, int id_equipo, int id_torneo, Timestamp fecha_inscripcion) {
+        this.id_jugador = id_jugador;
+        this.id_equipo = id_equipo;
+        this.id_torneo = id_torneo;
+        this.fecha_inscripcion = fecha_inscripcion;
+    }
+
     // Constructor con todos los parámetros (Para el ResultSet del DAO)
     public Inscripcion(int id, int id_jugador, int id_equipo, int id_torneo, Timestamp fecha_inscripcion) {
         this.id_inscripcion = id;
