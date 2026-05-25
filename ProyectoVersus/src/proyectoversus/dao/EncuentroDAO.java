@@ -8,11 +8,11 @@ import proyectoversus.modelo.Encuentro;
  * @author Alex
  */
 public class EncuentroDAO {
-    public void insertarEncuentro(Encuentro encuentro) { // CREATE
+    public int insertarEncuentro(Encuentro encuentro) { // CREATE
         String sql = "INSERT INTO encuentro (ronda, id_torneo, id_inscripcion1, id_inscripcion2, id_ganador, id_encuentro_sig) VALUES(?,?,?,?,?,?)";
-        
+        int idNuevo = 0;
         try (Connection conn = ConexionDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             stmt.setInt(1, encuentro.getRonda());
             
@@ -33,11 +33,17 @@ public class EncuentroDAO {
             else stmt.setInt(6, encuentro.getId_encuentro_sig());
             
             stmt.execute();
+            try (ResultSet resSet = stmt.getGeneratedKeys()) {
+                if (resSet.next()) {
+                    idNuevo = resSet.getInt(1); // Saca el ID de la primera columna del resultado
+                }
+            }
             System.out.println("ENCUENTRO AGREGADO A LA BASE DE DATOS SIN PROBLEMAS OuO b");
             
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return idNuevo;
     }
 
     public List<Encuentro> obtenerEncuentros() { // READ

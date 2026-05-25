@@ -99,5 +99,29 @@ public class InscripcionDAO {
             e.printStackTrace();
         }
     }
+    
+    public List<Inscripcion> torneoBuscar(int idTorneo){
+        List<Inscripcion> lista = new ArrayList<>();
+        String sql = "SELECT * FROM inscripcion WHERE id_torneo=?";
+        try (Connection conn = ConexionDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idTorneo);
+            try (ResultSet resSet = stmt.executeQuery()){
+                while (resSet.next()) {
+                Inscripcion ins = new Inscripcion(
+                    resSet.getInt("id_inscripcion"),
+                    resSet.getInt("id_jugador"),
+                    resSet.getInt("id_equipo"),
+                    resSet.getInt("id_torneo"),
+                    resSet.getTimestamp("fecha_inscripcion") // Aquí leemos la fecha que generó MySQL
+                );
+                lista.add(ins);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista; 
+    }
 
 }

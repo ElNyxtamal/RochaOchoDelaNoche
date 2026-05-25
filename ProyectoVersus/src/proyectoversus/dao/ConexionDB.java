@@ -12,7 +12,7 @@ public class ConexionDB {
     public static Connection getConnection(){
         Connection conn = null;
         try{
-            // 1. Establecer conexion
+            //1. Establecer conexion
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("LA CONEXION FUE TODO UN EXITO");
         }

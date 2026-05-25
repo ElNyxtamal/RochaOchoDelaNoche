@@ -102,4 +102,26 @@ public class TorneoDAO {
             e.printStackTrace();
         }
     }
+    
+    public void cambiarEstado(int idTorneo, String nuevoEstado) {
+        // Consultar SQL para actualizar solo la columna estado
+        String sql = "UPDATE torneo SET estado=? WHERE id_torneo=?";
+        
+        // Uso de try para asegurar el cierre automático de recursos
+        try (Connection conn = ConexionDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            // Inyectamos los parámetros en orden de los signos de interrogación '?'
+            stmt.setString(1, nuevoEstado); // Primer '?' -> El nuevo estado (ABIERTO, EN_PROGRESO, FINALIZADO)
+            stmt.setInt(2, idTorneo);       // Segundo '?' -> El ID del torneo a modificar
+            
+            // Ejecutamos la actualización en la BD
+            stmt.executeUpdate();
+            System.out.println("¡Estado del torneo #" + idTorneo + " cambiado a " + nuevoEstado + " con éxito! d(OuO b)");
+            
+        } catch (SQLException e) {
+            System.err.println("Error al cambiar el estado del torneo: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
