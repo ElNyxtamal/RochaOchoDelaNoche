@@ -105,5 +105,34 @@ public class UsuarioDAO {
             e.printStackTrace();
         }
     }
+    public Usuario validarLog(String username, String password) {
+        Usuario foundUser = null;
+        String sql = "SELECT * FROM usuario WHERE username=? AND password=?";
+        try (Connection conn = ConexionDB.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            try (ResultSet resSet = stmt.executeQuery()) {
+                if (resSet.next()) {
+                    foundUser = new Usuario();
+                    foundUser.setId(resSet.getInt("id_usuario"));
+                    foundUser.setPassword(resSet.getString("password"));
+                    foundUser.setUsername(resSet.getString("username"));
+                    foundUser.setRol(resSet.getString("rol"));
+                    
+                    // Manejo del id_jugador (puede ser NULL si es ADMIN)
+                    int idJugador = resSet.getInt("id_jugador");
+                    if (resSet.wasNull()) {
+                        foundUser.setId_jugador(0); // 0 indica que no tiene jugador asociado
+                    } else {
+                        foundUser.setId_jugador(idJugador);
+                    }
+                }
+            }
+        }catch(SQLException e){
+            System.out.println("Error al validar login" + e.getMessage());
+            e.printStackTrace();
+        }
+        return foundUser;
+    }
 
 }
